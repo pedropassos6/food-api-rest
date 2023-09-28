@@ -1,9 +1,17 @@
 package com.pedro.foodapi.domain.exception;
 
-public class EntidadeNaoEncontradaException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-    public EntidadeNaoEncontradaException(String mensagem){
+//@ResponseStatus(HttpStatus.NOT_FOUND)
+public abstract class EntidadeNaoEncontradaException extends RuntimeException {
+
+    public EntidadeNaoEncontradaException(String mensagem) {
         super(mensagem);
     }
+
+
+
 
 }
