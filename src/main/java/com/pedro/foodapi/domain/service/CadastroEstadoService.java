@@ -1,7 +1,6 @@
 package com.pedro.foodapi.domain.service;
 
 import com.pedro.foodapi.domain.exception.EntidadeEmUsoException;
-import com.pedro.foodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.pedro.foodapi.domain.exception.EstadoNaoEncontradoException;
 import com.pedro.foodapi.domain.model.Estado;
 import com.pedro.foodapi.domain.repository.EstadoRepository;

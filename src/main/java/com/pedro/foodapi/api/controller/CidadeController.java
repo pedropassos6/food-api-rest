@@ -1,7 +1,5 @@
 package com.pedro.foodapi.api.controller;
 
-import com.pedro.foodapi.api.exceptionhandler.Problema;
-import com.pedro.foodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.pedro.foodapi.domain.exception.EstadoNaoEncontradoException;
 import com.pedro.foodapi.domain.exception.NegocioException;
 import com.pedro.foodapi.domain.model.Cidade;
@@ -10,12 +8,9 @@ import com.pedro.foodapi.domain.service.CadastroCidadeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/cidades")
