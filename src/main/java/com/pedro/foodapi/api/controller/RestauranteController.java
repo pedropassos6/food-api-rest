@@ -3,7 +3,6 @@ package com.pedro.foodapi.api.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pedro.foodapi.domain.exception.CozinhaNaoEncontradaException;
-import com.pedro.foodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.pedro.foodapi.domain.exception.NegocioException;
 import com.pedro.foodapi.domain.model.Restaurante;
 import com.pedro.foodapi.domain.repository.RestauranteRepository;
@@ -18,6 +17,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class RestauranteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante adicionar(@RequestBody Restaurante restaurante){
+    public Restaurante adicionar(@RequestBody  @Valid Restaurante restaurante){
         try{
             return cadastroRestaurante.salvar(restaurante);
         } catch (CozinhaNaoEncontradaException e){
@@ -54,7 +54,7 @@ public class RestauranteController {
     }
 
     @PutMapping("/{id}")
-    public Restaurante atualizar(@RequestBody Restaurante restaurante, @PathVariable Long id){
+    public Restaurante atualizar(@RequestBody @Valid Restaurante restaurante, @PathVariable Long id){
         Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
 
         BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");

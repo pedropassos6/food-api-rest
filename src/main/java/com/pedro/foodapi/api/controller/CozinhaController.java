@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +55,7 @@ public class CozinhaController {
     }
 
     @PutMapping("/{id}")
-    public Cozinha atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha){
+    public Cozinha atualizar(@PathVariable Long id, @RequestBody @Valid Cozinha cozinha){
         Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(id);
 
         BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");

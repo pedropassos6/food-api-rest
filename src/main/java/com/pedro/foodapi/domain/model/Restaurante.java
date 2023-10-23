@@ -2,12 +2,19 @@ package com.pedro.foodapi.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pedro.foodapi.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,13 +30,22 @@ public class Restaurante {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @NotNull
+    @NotBlank
     private String nome;
 
+    @PositiveOrZero
+    @NotNull
     private BigDecimal taxaFrete;
 
 //    @JsonIgnore
-    @JsonIgnoreProperties("hibernateLazyInitializer")
-    @ManyToOne(fetch = FetchType.LAZY)
+    //essa anotação faz com que vc não consiga atualizar o nome da cozinha pela atualização do restaurante com o value nome, allowGetters permite que o nome da cozinha seja mostrado no corpo da respota
+    @JsonIgnoreProperties(value = "nome", allowGetters = true)
+    @ManyToOne //(fetch = FetchType.LAZY)
+    @NotNull
+    @Valid
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+    @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
     @JsonIgnore
