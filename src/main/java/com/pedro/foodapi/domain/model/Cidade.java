@@ -1,5 +1,6 @@
 package com.pedro.foodapi.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pedro.foodapi.core.validation.Groups;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

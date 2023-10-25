@@ -1,7 +1,5 @@
 package com.pedro.foodapi.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pedro.foodapi.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +15,7 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,36 +37,28 @@ public class Restaurante {
     @NotNull
     private BigDecimal taxaFrete;
 
-//    @JsonIgnore
-    //essa anotação faz com que vc não consiga atualizar o nome da cozinha pela atualização do restaurante com o value nome, allowGetters permite que o nome da cozinha seja mostrado no corpo da respota
-    @JsonIgnoreProperties(value = "nome", allowGetters = true)
     @ManyToOne //(fetch = FetchType.LAZY)
     @NotNull
     @Valid
-    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+//    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
-    @JsonIgnore
     @Embedded
     private Endereco endereco;
 
-    @JsonIgnore
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime dataCadastro;
+    private OffsetDateTime dataCadastro;
 
-    @JsonIgnore
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany //(fetch = FetchType.EAGER)
     @JoinTable(name = "restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id"), inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
 }
