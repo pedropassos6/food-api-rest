@@ -1,15 +1,10 @@
 package com.pedro.foodapi.domain.service;
 
-import com.pedro.foodapi.domain.exception.EntidadeEmUsoException;
-import com.pedro.foodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.pedro.foodapi.domain.exception.RestauranteNaoEncontradoException;
 import com.pedro.foodapi.domain.model.Cozinha;
 import com.pedro.foodapi.domain.model.Restaurante;
-import com.pedro.foodapi.domain.repository.CozinhaRepository;
 import com.pedro.foodapi.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,15 +30,27 @@ public class CadastroRestauranteService {
         return restauranteRepository.save(restaurante);
     }
 
+//    @Transactional
+//    public void excluir(Long id){
+//        try {
+//            restauranteRepository.deleteById(id);
+//        }catch (EmptyResultDataAccessException e){
+//            throw new RestauranteNaoEncontradoException(id);
+//        }catch (DataIntegrityViolationException e){
+//            throw new EntidadeEmUsoException(String.format(MSG_RESTAURANTE_EM_USO, id));
+//        }
+//    }
+
     @Transactional
-    public void excluir(Long id){
-        try {
-            restauranteRepository.deleteById(id);
-        }catch (EmptyResultDataAccessException e){
-            throw new RestauranteNaoEncontradoException(id);
-        }catch (DataIntegrityViolationException e){
-            throw new EntidadeEmUsoException(String.format(MSG_RESTAURANTE_EM_USO, id));
-        }
+    public void ativar(Long id){
+        Restaurante restauranteAtual = buscarOuFalhar(id);
+        restauranteAtual.ativar();
+    }
+
+    @Transactional
+    public void inativar(Long id){
+        Restaurante restauranteAtual = buscarOuFalhar(id);
+        restauranteAtual.inativar();
     }
 
     public Restaurante buscarOuFalhar(Long id){

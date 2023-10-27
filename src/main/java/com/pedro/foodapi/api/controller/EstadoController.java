@@ -1,5 +1,9 @@
 package com.pedro.foodapi.api.controller;
 
+import com.pedro.foodapi.api.assembler.EstadoInputDesAssembler;
+import com.pedro.foodapi.api.assembler.EstadoModelAssembler;
+import com.pedro.foodapi.api.model.EstadoModel;
+import com.pedro.foodapi.api.model.input.EstadoInput;
 import com.pedro.foodapi.domain.exception.EntidadeEmUsoException;
 import com.pedro.foodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.pedro.foodapi.domain.model.Estado;
@@ -25,29 +29,41 @@ public class EstadoController {
     @Autowired
     private CadastroEstadoService cadastroEstado;
 
+    @Autowired
+    private EstadoModelAssembler estadoModelAssembler;
+
+    @Autowired
+    private EstadoInputDesAssembler estadoInputDesAssembler;
+
     @GetMapping
-    public List<Estado> listar(){
-        return estadoRepository.findAll();
+    public List<EstadoModel> listar(){
+        List<Estado> todosEstados = estadoRepository.findAll();
+
+        return estadoModelAssembler.toCollectionModel(todosEstados);
     }
 
     @GetMapping("/{id}")
-    public Estado buscar(@PathVariable Long id){
-        return cadastroEstado.buscarOuFalhar(id);
+    public EstadoModel buscar(@PathVariable Long id){
+        Estado estado = cadastroEstado.buscarOuFalhar(id);
+        return estadoModelAssembler.toModel(estado);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Estado adicionar(@RequestBody Estado estado){
-        return cadastroEstado.salvar(estado);
+    public EstadoModel adicionar(@RequestBody EstadoInput estadoInput){
+        Estado estado = estadoInputDesAssembler.toDomainObject(estadoInput);
+        estado = cadastroEstado.salvar(estado);
+
+        return estadoModelAssembler.toModel(estado);
     }
 
     @PutMapping("/{id}")
-    public Estado atualizar(@RequestBody Estado estado, @PathVariable Long id){
+    public EstadoModel atualizar(@RequestBody EstadoInput estadoInput, @PathVariable Long id){
         Estado estadoAtual = cadastroEstado.buscarOuFalhar(id);
+        estadoInputDesAssembler.copyToDomainObject(estadoInput, estadoAtual);
 
-        BeanUtils.copyProperties(estado, estadoAtual, "id");
-
-        return cadastroEstado.salvar(estadoAtual);
+        estadoAtual = cadastroEstado.salvar(estadoAtual);
+        return estadoModelAssembler.toModel(estadoAtual);
     }
 
     @DeleteMapping("/{id}")

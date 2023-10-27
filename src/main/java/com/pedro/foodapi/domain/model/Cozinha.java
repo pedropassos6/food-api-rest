@@ -24,7 +24,7 @@ public class Cozinha {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotBlank
+//    @NotBlank
     private String nome;
 
     @OneToMany(mappedBy = "cozinha")
