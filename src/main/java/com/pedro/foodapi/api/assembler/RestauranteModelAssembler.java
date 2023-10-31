@@ -1,6 +1,6 @@
 package com.pedro.foodapi.api.assembler;
 
-import com.pedro.foodapi.api.model.CozinhaModel;
+//import com.pedro.foodapi.api.model.CozinhaModel;
 import com.pedro.foodapi.api.model.RestauranteModel;
 import com.pedro.foodapi.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
