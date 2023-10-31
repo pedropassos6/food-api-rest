@@ -4,6 +4,7 @@ import com.pedro.foodapi.api.assembler.RestauranteModelAssembler;
 import com.pedro.foodapi.api.assembler.RestauranteInputDesAssembler;
 import com.pedro.foodapi.api.model.RestauranteModel;
 import com.pedro.foodapi.api.model.input.RestauranteInput;
+import com.pedro.foodapi.domain.exception.CidadeNaoEncontradaException;
 import com.pedro.foodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.pedro.foodapi.domain.exception.NegocioException;
 import com.pedro.foodapi.domain.model.Restaurante;
@@ -51,7 +52,7 @@ public class RestauranteController {
         try{
 //            Restaurante restaurante = toDomainObject(restauranteInput);
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteInputDesAssembler.toDomainObject(restauranteInput)));
-        } catch (CozinhaNaoEncontradaException e){
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e){
             throw new NegocioException(e.getMessage());
         }
     }
@@ -66,7 +67,7 @@ public class RestauranteController {
 //            BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
-        } catch (CozinhaNaoEncontradaException e){
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e){
             throw new NegocioException(e.getMessage());
         }
     }

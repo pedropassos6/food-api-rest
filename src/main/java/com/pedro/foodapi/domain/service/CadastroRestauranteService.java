@@ -1,6 +1,7 @@
 package com.pedro.foodapi.domain.service;
 
 import com.pedro.foodapi.domain.exception.RestauranteNaoEncontradoException;
+import com.pedro.foodapi.domain.model.Cidade;
 import com.pedro.foodapi.domain.model.Cozinha;
 import com.pedro.foodapi.domain.model.Restaurante;
 import com.pedro.foodapi.domain.repository.RestauranteRepository;
@@ -20,12 +21,19 @@ public class CadastroRestauranteService {
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
 
+    @Autowired
+    private CadastroCidadeService cadastroCidadeService;
+
     @Transactional
     public Restaurante salvar(Restaurante restaurante){
         Long cozinhaId = restaurante.getCozinha().getId();
+        Long cidadeId = restaurante.getEndereco().getCidade().getId();
+
         Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
+        Cidade cidade = cadastroCidadeService.buscarOuFalhar(cidadeId);
 
         restaurante.setCozinha(cozinha);
+        restaurante.getEndereco().setCidade(cidade);
 
         return restauranteRepository.save(restaurante);
     }
