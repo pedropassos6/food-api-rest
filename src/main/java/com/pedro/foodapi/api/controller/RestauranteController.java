@@ -7,6 +7,7 @@ import com.pedro.foodapi.api.model.input.RestauranteInput;
 import com.pedro.foodapi.domain.exception.CidadeNaoEncontradaException;
 import com.pedro.foodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.pedro.foodapi.domain.exception.NegocioException;
+import com.pedro.foodapi.domain.exception.RestauranteNaoEncontradoException;
 import com.pedro.foodapi.domain.model.Restaurante;
 import com.pedro.foodapi.domain.repository.RestauranteRepository;
 import com.pedro.foodapi.domain.service.CadastroRestauranteService;
@@ -82,6 +83,40 @@ public class RestauranteController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativar(@PathVariable Long id){
         cadastroRestaurante.inativar(id);
+    }
+
+    @PutMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativar(@RequestBody List<Long> restauranteIds){
+        try{
+            cadastroRestaurante.ativar(restauranteIds);
+        } catch (RestauranteNaoEncontradoException e){
+            throw new NegocioException(e.getMessage(), e);
+        }
+
+    }
+
+    @DeleteMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativar(@RequestBody List<Long> restauranteIds){
+        try{
+            cadastroRestaurante.inativar(restauranteIds);
+        } catch (RestauranteNaoEncontradoException e){
+            throw new NegocioException(e.getMessage(), e);
+        }
+
+    }
+
+    @PutMapping("/{id}/abertura")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void abrir(@PathVariable Long id){
+        cadastroRestaurante.abrir(id);
+    }
+
+    @PutMapping("{id}/fechamento")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void fechar(@PathVariable Long id){
+        cadastroRestaurante.fechar(id);
     }
 
 //    @PatchMapping("/{id}")
