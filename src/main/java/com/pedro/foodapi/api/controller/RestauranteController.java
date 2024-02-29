@@ -1,9 +1,11 @@
 package com.pedro.foodapi.api.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.pedro.foodapi.api.assembler.RestauranteModelAssembler;
 import com.pedro.foodapi.api.assembler.RestauranteInputDesAssembler;
 import com.pedro.foodapi.api.model.RestauranteModel;
 import com.pedro.foodapi.api.model.input.RestauranteInput;
+import com.pedro.foodapi.api.model.view.RestauranteView;
 import com.pedro.foodapi.domain.exception.CidadeNaoEncontradaException;
 import com.pedro.foodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.pedro.foodapi.domain.exception.NegocioException;
@@ -38,6 +40,18 @@ public class RestauranteController {
     @GetMapping
     public List<RestauranteModel> listar(){
         return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
+    }
+
+    @GetMapping(params = "projecao=resumo")
+    @JsonView(RestauranteView.Resumo.class)
+    public List<RestauranteModel> listarResumido(){
+        return listar();
+    }
+
+    @GetMapping(params = "projecao=apenas-nome")
+    @JsonView(RestauranteView.ApenasNome.class)
+    public List<RestauranteModel> listarApenasNomes(){
+        return listar();
     }
 
     @GetMapping("/{id}")

@@ -11,6 +11,10 @@ import com.pedro.foodapi.domain.repository.CozinhaRepository;
 import com.pedro.foodapi.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,8 +44,14 @@ public class CozinhaController {
     private CozinhaInputDesAssembler cozinhaInputDesAssembler;
 
     @GetMapping
-    public List<CozinhaModel> listar(){
-        return cozinhaModelAssembler.toColletionModel(cozinhaRepository.findAll());
+    public Page<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable){
+        Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
+
+        List<CozinhaModel> cozinhasModel = cozinhaModelAssembler.toColletionModel(cozinhasPage.getContent());
+
+        Page<CozinhaModel> cozinhasModelPage = new PageImpl<>(cozinhasModel, pageable, cozinhasPage.getTotalElements());
+
+        return cozinhasModelPage;
     }
 
 //    @ResponseStatus(HttpStatus.OK) para atribuir um status para a resposta

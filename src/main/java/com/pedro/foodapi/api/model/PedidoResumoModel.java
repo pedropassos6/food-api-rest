@@ -1,5 +1,6 @@
 package com.pedro.foodapi.api.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,8 @@ import java.util.List;
 
 @Setter
 @Getter
-public class PedidoModel {
+//@JsonFilter("pedidoFilter")
+public class PedidoResumoModel {
 
     private String codigo;
     private BigDecimal subtotal;
@@ -17,12 +19,8 @@ public class PedidoModel {
     private BigDecimal valorTotal;
     private String status;
     private OffsetDateTime dataCriacao;
-    private OffsetDateTime dataConfirmacao;
-    private OffsetDateTime dataEntrega;
-    private OffsetDateTime dataCancelamento;
     private RestauranteResumoModel restaurante;
-    private UsuarioModel cliente;
-    private FormaPagamentoModel formaPagamento;
-    private EnderecoModel enderecoEntrega;
-    private List<ItemPedidoModel> itens;
+//    private UsuarioModel cliente;
+    private String nomeCliente;
+
 }

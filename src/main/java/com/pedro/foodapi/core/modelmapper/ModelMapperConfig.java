@@ -1,7 +1,9 @@
 package com.pedro.foodapi.core.modelmapper;
 
 import com.pedro.foodapi.api.model.EnderecoModel;
+import com.pedro.foodapi.api.model.input.ItemPedidoInput;
 import com.pedro.foodapi.domain.model.Endereco;
+import com.pedro.foodapi.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,9 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper(){
 
         var modelMapper = new ModelMapper();
+
+        modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
+                .addMappings(mapper -> mapper.skip(ItemPedido::setId));
 
         var enderecoToEnderecoModelTypeMap = modelMapper.createTypeMap(Endereco.class, EnderecoModel.class);
 
